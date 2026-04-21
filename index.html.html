@@ -1,0 +1,431 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>Kit Operacional — Festas & Buffet</title>
+<style>
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:#f5f5f0;color:#1a1a1a;font-size:15px;min-height:100vh}
+  header{background:#fff;border-bottom:1px solid #e8e8e0;padding:14px 16px;position:sticky;top:0;z-index:100}
+  header h1{font-size:16px;font-weight:600;color:#1a1a1a}
+  header p{font-size:12px;color:#888;margin-top:1px}
+  .tabs{display:grid;grid-template-columns:repeat(4,1fr);background:#fff;border-bottom:1px solid #e8e8e0;position:sticky;top:57px;z-index:99}
+  .tab{padding:10px 4px 8px;font-size:11px;font-weight:500;cursor:pointer;color:#888;text-align:center;border-bottom:2px solid transparent;transition:all .15s;background:none;border-top:none;border-left:none;border-right:none}
+  .tab span{font-size:18px;display:block;margin-bottom:2px}
+  .tab.active{color:#e85d26;border-bottom-color:#e85d26}
+  .panel{display:none;padding:16px;padding-bottom:80px}
+  .panel.active{display:block}
+  .card{background:#fff;border-radius:12px;padding:14px;margin-bottom:12px;border:1px solid #e8e8e0}
+  .card-title{font-size:14px;font-weight:600;margin-bottom:12px;color:#1a1a1a}
+  .field{margin-bottom:10px}
+  label{font-size:12px;color:#666;display:block;margin-bottom:4px;font-weight:500}
+  input,select,textarea{width:100%;font-size:15px;padding:11px 12px;border:1px solid #ddd;border-radius:8px;background:#fff;color:#1a1a1a;-webkit-appearance:none;font-family:inherit}
+  input:focus,select:focus{outline:none;border-color:#e85d26}
+  .row2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+  .btn{display:block;width:100%;padding:13px;font-size:14px;font-weight:600;border-radius:10px;cursor:pointer;text-align:center;border:none;font-family:inherit}
+  .btn.primary{background:#e85d26;color:#fff}
+  .btn.primary:active{background:#c94e1e}
+  .btn.secondary{background:#f0f0eb;color:#444;border:1px solid #e0e0d8}
+  .btn.sm{width:auto;display:inline-block;padding:7px 14px;font-size:13px;font-weight:500}
+  .btn.danger-sm{background:none;border:none;color:#cc3333;font-size:22px;padding:4px 8px;cursor:pointer;font-family:inherit}
+  .stats-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px}
+  .stat{background:#fff;border-radius:10px;padding:12px;text-align:center;border:1px solid #e8e8e0}
+  .stat-label{font-size:11px;color:#888;margin-bottom:3px;font-weight:500}
+  .stat-val{font-size:20px;font-weight:700;color:#1a1a1a}
+  .stat-val.green{color:#2d8a4e}
+  .stat-val.orange{color:#e85d26}
+  .event-card{background:#fff;border-radius:12px;padding:14px;margin-bottom:10px;border:1px solid #e8e8e0}
+  .event-header{display:flex;justify-content:space-between;align-items:flex-start}
+  .event-name{font-size:15px;font-weight:600}
+  .event-meta{font-size:12px;color:#888;margin:3px 0 10px}
+  .event-money{font-size:15px;font-weight:600}
+  .event-sub{font-size:12px;color:#888}
+  .event-footer{display:flex;justify-content:space-between;align-items:center;margin-top:10px;padding-top:10px;border-top:1px solid #f0f0eb}
+  .badge{display:inline-block;padding:5px 12px;border-radius:20px;font-size:12px;font-weight:600;cursor:pointer}
+  .badge.ok{background:#e6f4ec;color:#2d8a4e}
+  .badge.pend{background:#fff3e6;color:#e85d26}
+  .badge.canc{background:#fde8e8;color:#cc3333}
+  .phase-label{font-size:11px;font-weight:700;letter-spacing:.08em;color:#aaa;text-transform:uppercase;margin:16px 0 8px;padding-bottom:6px;border-bottom:1px solid #f0f0eb}
+  .phase-label:first-child{margin-top:0}
+  .check-item{display:flex;align-items:flex-start;gap:12px;padding:11px 0;border-bottom:1px solid #f5f5f0}
+  .check-item:last-child{border-bottom:none}
+  .check-item input[type=checkbox]{width:22px;height:22px;min-width:22px;margin-top:1px;cursor:pointer;accent-color:#e85d26}
+  .check-item label{cursor:pointer;font-size:14px;line-height:1.5;color:#1a1a1a}
+  .check-item.done label{text-decoration:line-through;color:#bbb}
+  .script-card{background:#fff;border-radius:12px;padding:14px;margin-bottom:10px;border:1px solid #e8e8e0}
+  .script-title{font-size:13px;font-weight:600;color:#888;text-transform:uppercase;letter-spacing:.05em;margin-bottom:8px}
+  .script-text{background:#f8f7f4;border-radius:8px;padding:12px;font-size:13px;line-height:1.7;white-space:pre-wrap;color:#333;margin-bottom:10px;border:1px solid #eeede8}
+  .copy-btn{width:100%;padding:11px;font-size:13px;font-weight:600;border-radius:8px;cursor:pointer;background:#f0f0eb;color:#444;border:1px solid #e0e0d8;font-family:inherit}
+  .copy-btn.copied{background:#e6f4ec;color:#2d8a4e;border-color:#c0e0cc}
+  .tipo-toggle{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:14px}
+  .tipo-btn{padding:11px;font-size:14px;font-weight:500;border-radius:8px;cursor:pointer;background:#f0f0eb;color:#666;text-align:center;border:1px solid #e0e0d8;font-family:inherit}
+  .tipo-btn.active{background:#fff3ee;color:#e85d26;border-color:#e85d26;font-weight:600}
+  .cost-item-card{background:#f8f7f4;border-radius:10px;padding:12px;margin-bottom:8px;border:1px solid #eeede8}
+  .cost-item-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px}
+  .cost-item-row{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+  .tag{display:inline-block;font-size:11px;padding:4px 10px;border-radius:20px;font-weight:600}
+  .tag.buffet{background:#e1f5ee;color:#0f6e56}
+  .tag.kit{background:#e6f1fb;color:#185fa5}
+  .tag.transp{background:#fff3e6;color:#e85d26}
+  .tag.ajud{background:#fbeaf0;color:#993556}
+  .add-btns{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:10px}
+  .result-box{background:#fff;border-radius:12px;padding:14px;border:2px solid #2d8a4e;margin-top:12px}
+  .result-title{font-size:12px;font-weight:700;color:#2d8a4e;text-transform:uppercase;letter-spacing:.05em;margin-bottom:10px}
+  .result-row{display:flex;justify-content:space-between;align-items:center;padding:5px 0;font-size:14px;color:#444}
+  .result-row.total{font-weight:700;font-size:16px;border-top:1px solid #e0f0e8;margin-top:8px;padding-top:10px;color:#1a1a1a}
+  .result-row .green{color:#2d8a4e;font-weight:600}
+  .empty{color:#aaa;font-size:13px;text-align:center;padding:24px;border:1.5px dashed #ddd;border-radius:10px;line-height:1.6}
+  .save-toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);background:#1a1a1a;color:#fff;padding:10px 20px;border-radius:20px;font-size:13px;font-weight:500;opacity:0;transition:opacity .3s;pointer-events:none;z-index:999}
+  .save-toast.show{opacity:1}
+</style>
+</head>
+<body>
+
+<header>
+  <h1>Kit Festas & Buffet</h1>
+  <p>Gestão operacional — dados salvos no celular</p>
+</header>
+
+<div class="tabs">
+  <button class="tab active" onclick="showTab('eventos')"><span>📅</span>Agenda</button>
+  <button class="tab" onclick="showTab('checklist')"><span>✅</span>Checklist</button>
+  <button class="tab" onclick="showTab('scripts')"><span>💬</span>Scripts</button>
+  <button class="tab" onclick="showTab('calc')"><span>💰</span>Preço</button>
+</div>
+
+<!-- AGENDA -->
+<div id="tab-eventos" class="panel active">
+  <div class="card">
+    <div class="card-title">Novo evento</div>
+    <div class="field"><label>Nome do cliente</label><input type="text" id="ev-cliente" placeholder="Ex: Família Silva"></div>
+    <div class="row2">
+      <div class="field"><label>Data</label><input type="date" id="ev-data"></div>
+      <div class="field"><label>Tipo</label>
+        <select id="ev-tipo">
+          <option>Kit completo</option><option>Por pessoa</option>
+          <option>Só buffet</option><option>Só montagem</option>
+        </select>
+      </div>
+    </div>
+    <div class="row2">
+      <div class="field"><label>Valor total (R$)</label><input type="number" id="ev-valor" placeholder="0" inputmode="decimal"></div>
+      <div class="field"><label>Sinal recebido (R$)</label><input type="number" id="ev-sinal" placeholder="0" inputmode="decimal"></div>
+    </div>
+    <div class="field"><label>Endereço</label><input type="text" id="ev-end" placeholder="Rua, bairro..."></div>
+    <button class="btn primary" onclick="addEvento()">Adicionar evento</button>
+  </div>
+  <div id="eventos-stats" style="display:none"></div>
+  <div id="eventos-list"><div class="empty">Nenhum evento cadastrado.<br>Adicione o primeiro acima.</div></div>
+</div>
+
+<!-- CHECKLIST -->
+<div id="tab-checklist" class="panel">
+  <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">
+    <p style="font-size:13px;color:#888">Marque conforme avança na preparação</p>
+    <button class="btn secondary sm" onclick="resetChecklist()">Resetar</button>
+  </div>
+  <div class="card" id="checklist-card"></div>
+</div>
+
+<!-- SCRIPTS -->
+<div id="tab-scripts" class="panel">
+  <p style="font-size:13px;color:#888;margin-bottom:12px">Toque em "Copiar" e cole direto no WhatsApp</p>
+  <div id="scripts-list"></div>
+</div>
+
+<!-- CALCULADORA -->
+<div id="tab-calc" class="panel">
+  <div class="card">
+    <div class="card-title">Tipo de cobrança</div>
+    <div class="tipo-toggle">
+      <button class="tipo-btn active" id="btn-pessoa" onclick="setTipo('pessoa')">Por pessoa</button>
+      <button class="tipo-btn" id="btn-kit" onclick="setTipo('kit')">Kit fechado</button>
+    </div>
+    <div id="pessoas-field" class="field"><label>Número de pessoas</label><input type="number" id="num-pessoas" value="30" min="1" inputmode="numeric" oninput="updateCalc()"></div>
+    <div class="field"><label>Margem de lucro desejada (%)</label><input type="number" id="margem" value="40" min="0" inputmode="numeric" oninput="updateCalc()"></div>
+  </div>
+  <div class="card">
+    <div class="card-title">Custos do evento</div>
+    <div id="cost-items"></div>
+    <div class="add-btns">
+      <button class="btn secondary sm" onclick="addItem('buffet')">+ Buffet</button>
+      <button class="btn secondary sm" onclick="addItem('transp')">+ Transporte</button>
+      <button class="btn secondary sm" onclick="addItem('ajud')">+ Ajudante</button>
+      <button class="btn secondary sm" onclick="addItem('kit')">+ Kit/decoração</button>
+    </div>
+  </div>
+  <div id="calc-result"></div>
+</div>
+
+<div class="save-toast" id="toast">Salvo automaticamente</div>
+
+<script>
+let eventos = JSON.parse(localStorage.getItem('festas_eventos') || '[]');
+let costItems = JSON.parse(localStorage.getItem('festas_costs') || '[]');
+let tipoPreco = localStorage.getItem('festas_tipo') || 'pessoa';
+let checkState = JSON.parse(localStorage.getItem('festas_checks') || '{}');
+let itemId = parseInt(localStorage.getItem('festas_itemid') || '0');
+
+function save() {
+  localStorage.setItem('festas_eventos', JSON.stringify(eventos));
+  localStorage.setItem('festas_costs', JSON.stringify(costItems));
+  localStorage.setItem('festas_tipo', tipoPreco);
+  localStorage.setItem('festas_checks', JSON.stringify(checkState));
+  localStorage.setItem('festas_itemid', itemId);
+  showToast();
+}
+
+function showToast() {
+  const t = document.getElementById('toast');
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 1500);
+}
+
+function showTab(t) {
+  const ids = ['eventos','checklist','scripts','calc'];
+  document.querySelectorAll('.tab').forEach((el,i) => el.classList.toggle('active', ids[i]===t));
+  document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+  document.getElementById('tab-'+t).classList.add('active');
+}
+
+function fmt(n) { return 'R$ ' + n.toLocaleString('pt-BR', {minimumFractionDigits:0, maximumFractionDigits:0}); }
+
+// ---- EVENTOS ----
+function addEvento() {
+  const cliente = document.getElementById('ev-cliente').value.trim();
+  const data = document.getElementById('ev-data').value;
+  if (!cliente || !data) { alert('Preencha nome e data.'); return; }
+  eventos.push({
+    id: Date.now(),
+    data, cliente,
+    tipo: document.getElementById('ev-tipo').value,
+    valor: parseFloat(document.getElementById('ev-valor').value) || 0,
+    sinal: parseFloat(document.getElementById('ev-sinal').value) || 0,
+    end: document.getElementById('ev-end').value,
+    status: 'confirmado'
+  });
+  eventos.sort((a,b) => a.data.localeCompare(b.data));
+  save();
+  renderEventos();
+  ['ev-cliente','ev-data','ev-valor','ev-sinal','ev-end'].forEach(id => document.getElementById(id).value = '');
+}
+
+function toggleStatus(id) {
+  const order = ['confirmado','realizado','cancelado'];
+  const e = eventos.find(x => x.id === id);
+  if (e) { e.status = order[(order.indexOf(e.status)+1)%3]; save(); renderEventos(); }
+}
+
+function removeEvento(id) {
+  if (!confirm('Remover este evento?')) return;
+  eventos = eventos.filter(e => e.id !== id);
+  save(); renderEventos();
+}
+
+function renderEventos() {
+  const list = document.getElementById('eventos-list');
+  const stats = document.getElementById('eventos-stats');
+  if (!eventos.length) {
+    list.innerHTML = '<div class="empty">Nenhum evento cadastrado.<br>Adicione o primeiro acima.</div>';
+    stats.style.display = 'none'; return;
+  }
+  stats.style.display = 'block';
+  let tv=0, ts=0, count=0;
+  eventos.forEach(e => { if (e.status !== 'cancelado') { tv+=e.valor; ts+=e.sinal; count++; } });
+  stats.innerHTML = `<div class="stats-grid">
+    <div class="stat"><div class="stat-label">Eventos ativos</div><div class="stat-val">${count}</div></div>
+    <div class="stat"><div class="stat-label">Receita total</div><div class="stat-val green">${fmt(tv)}</div></div>
+    <div class="stat"><div class="stat-label">Já recebido</div><div class="stat-val">${fmt(ts)}</div></div>
+    <div class="stat"><div class="stat-label">A receber</div><div class="stat-val orange">${fmt(tv-ts)}</div></div>
+  </div>`;
+  list.innerHTML = eventos.map(e => {
+    const dt = e.data ? new Date(e.data+'T12:00:00').toLocaleDateString('pt-BR',{day:'2-digit',month:'2-digit',year:'2-digit'}) : '';
+    const bc = e.status==='realizado'?'ok':e.status==='cancelado'?'canc':'pend';
+    const bl = e.status==='realizado'?'Realizado':e.status==='cancelado'?'Cancelado':'Confirmado';
+    return `<div class="event-card">
+      <div class="event-header">
+        <div>
+          <div class="event-name">${e.cliente}</div>
+          <div class="event-meta">${dt} · ${e.tipo}${e.end?' · '+e.end:''}</div>
+        </div>
+        <button class="btn danger-sm" onclick="removeEvento(${e.id})">×</button>
+      </div>
+      <div class="event-money">${fmt(e.valor)}</div>
+      <div class="event-sub">Sinal: ${fmt(e.sinal)} · Saldo: ${fmt(e.valor-e.sinal)}</div>
+      <div class="event-footer">
+        <span class="badge ${bc}" onclick="toggleStatus(${e.id})">${bl}</span>
+        <span style="font-size:12px;color:#bbb">toque no badge para mudar</span>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+// ---- CHECKLIST ----
+const checkData = {
+  d7: { label:'D-7 — Uma semana antes', items:['Confirmar endereço e horário com o cliente','Verificar itens do kit no estoque','Separar descartáveis (pratos, copos, talheres)','Confirmar disponibilidade dos ajudantes','Checar se o sinal foi recebido','Listar ingredientes do buffet a comprar'] },
+  d1: { label:'D-1 — Véspera do evento', items:['Fazer compras dos ingredientes do buffet','Preparar itens com antecedência','Montar e organizar caixas por evento','Confirmar horário com ajudantes','Enviar lembrete ao cliente','Checar veículo de transporte','Carregar materiais de montagem'] },
+  dia: { label:'Dia do evento — Montagem', items:['Chegar com pelo menos 1h de antecedência','Conferir itens ao descarregar','Montar mesa conforme referência do cliente','Organizar buffet conforme combinado','Ajuste final de decoração','Fotografar o trabalho pronto','Cobrar saldo restante se ainda não pago','Orientar cliente sobre itens a devolver'] },
+  pos: { label:'Pós-evento — Desmonte e conferência', items:['Recolher todos os itens de locação/kit','Conferir lista ao carregar','Lavar e guardar peças reutilizáveis','Registrar itens danificados','Enviar mensagem de pós-evento','Atualizar status do evento na agenda','Pedir indicação ao cliente satisfeito'] }
+};
+
+function renderChecklist() {
+  document.getElementById('checklist-card').innerHTML = Object.entries(checkData).map(([phase, data]) =>
+    `<div class="phase-label">${data.label}</div>` +
+    data.items.map((item, i) => {
+      const key = `${phase}-${i}`;
+      const checked = checkState[key] ? 'checked' : '';
+      const done = checkState[key] ? 'done' : '';
+      return `<div class="check-item ${done}" id="ci-${key}">
+        <input type="checkbox" id="cb-${key}" ${checked} onchange="toggleCheck('${key}')">
+        <label for="cb-${key}">${item}</label>
+      </div>`;
+    }).join('')
+  ).join('');
+}
+
+function toggleCheck(key) {
+  const cb = document.getElementById('cb-'+key);
+  checkState[key] = cb.checked;
+  document.getElementById('ci-'+key).classList.toggle('done', cb.checked);
+  save();
+}
+
+function resetChecklist() {
+  if (!confirm('Resetar todos os itens do checklist?')) return;
+  checkState = {};
+  save(); renderChecklist();
+}
+
+// ---- SCRIPTS ----
+const scripts = [
+  { title:'Resposta para orçamento', text:`Olá, [Nome]! Tudo bem?\n\nObrigada pelo contato! Para te enviar um orçamento personalizado, preciso de algumas informações:\n- Data da festa\n- Quantidade de crianças e adultos\n- Tema, se tiver\n- Endereço do evento\n\nMe manda esses detalhes e já te passo os valores! 🎉` },
+  { title:'Confirmação e envio de proposta', text:`Olá, [Nome]!\n\nSegue a proposta para a festa do(a) [criança] no dia [data]:\n\n📋 [descreva o serviço]\n💰 Valor total: R$ [valor]\n✅ Sinal para confirmar: R$ [sinal]\n📍 Endereço: [endereço]\n\nO sinal garante a data na agenda. Pagamento via PIX ou transferência.\n\nQualquer dúvida estou à disposição! 😊` },
+  { title:'Lembrete D-3', text:`Olá, [Nome]! 😊\n\nPassando para confirmar a festa do(a) [criança] no dia [data] às [horário].\n\nConfirma:\n1. Endereço: [endereço]\n2. Alguma mudança no cardápio?\n3. Posso chegar [X]h antes para a montagem?\n\nQualquer ajuste me avise. Vai ser incrível! 🎈` },
+  { title:'Cobrança do saldo', text:`Olá, [Nome]!\n\nTudo certo para a festa de amanhã! 🎉\n\nSó lembrando que o saldo de R$ [valor] pode ser pago hoje à noite ou na entrega, conforme combinamos.\n\nPIX: [sua chave PIX]\n\nQualquer coisa me chama. 😊` },
+  { title:'Pós-evento — feedback', text:`Olá, [Nome]!\n\nFoi uma alegria participar da festa do(a) [criança]! 🎂🎈\n\nEspero que tenha superado as expectativas. Me conta como foi — seu feedback é muito importante!\n\nE se tiver amigos que precisem do serviço, fico feliz com a indicação! 💛` }
+];
+
+function renderScripts() {
+  document.getElementById('scripts-list').innerHTML = scripts.map((s, i) =>
+    `<div class="script-card">
+      <div class="script-title">${s.title}</div>
+      <div class="script-text">${s.text}</div>
+      <button class="copy-btn" id="copy-${i}" onclick="copyScript(${i})">Copiar mensagem</button>
+    </div>`
+  ).join('');
+}
+
+function copyScript(i) {
+  navigator.clipboard.writeText(scripts[i].text).then(() => {
+    const btn = document.getElementById('copy-'+i);
+    btn.textContent = '✓ Copiado!';
+    btn.classList.add('copied');
+    setTimeout(() => { btn.textContent = 'Copiar mensagem'; btn.classList.remove('copied'); }, 2000);
+  });
+}
+
+// ---- CALCULADORA ----
+function setTipo(t) {
+  tipoPreco = t;
+  document.getElementById('btn-pessoa').classList.toggle('active', t==='pessoa');
+  document.getElementById('btn-kit').classList.toggle('active', t==='kit');
+  document.getElementById('pessoas-field').style.display = t==='pessoa' ? 'block' : 'none';
+  save(); updateCalc();
+}
+
+function addItem(type) {
+  const id = 'item-'+(itemId++);
+  costItems.push({ id, type, nome:'', qty:1, cost:0 });
+  const container = document.getElementById('cost-items');
+  const div = document.createElement('div');
+  div.className = 'cost-item-card';
+  div.id = 'cr-'+id;
+  const ph = {buffet:'Ex: bolo, salgados...', transp:'Ex: combustível ida/volta', ajud:'Ex: ajudante do evento', kit:'Ex: toalha, suporte, arranjo'}[type];
+  const label = {buffet:'Buffet', transp:'Transporte', ajud:'Ajudante', kit:'Kit/decoração'}[type];
+  div.innerHTML = `
+    <div class="cost-item-top">
+      <span class="tag ${type}">${label}</span>
+      <button class="btn danger-sm" onclick="removeItem('${id}')">×</button>
+    </div>
+    <div class="field"><label>Descrição</label><input type="text" placeholder="${ph}" oninput="updateItem('${id}','nome',this.value)"></div>
+    <div class="cost-item-row">
+      <div class="field"><label>Quantidade</label><input type="number" min="1" value="1" inputmode="decimal" oninput="updateItem('${id}','qty',this.value)"></div>
+      <div class="field"><label>Custo unit. (R$)</label><input type="number" min="0" placeholder="0" inputmode="decimal" oninput="updateItem('${id}','cost',this.value)"></div>
+    </div>`;
+  container.appendChild(div);
+  save(); updateCalc();
+}
+
+function updateItem(id, field, val) {
+  const item = costItems.find(c => c.id===id);
+  if (!item) return;
+  if (field==='qty') item.qty = parseFloat(val)||1;
+  else if (field==='cost') item.cost = parseFloat(val)||0;
+  else item[field] = val;
+  save(); updateCalc();
+}
+
+function removeItem(id) {
+  costItems = costItems.filter(c => c.id!==id);
+  const el = document.getElementById('cr-'+id);
+  if (el) el.remove();
+  save(); updateCalc();
+}
+
+function updateCalc() {
+  const numPessoas = parseInt(document.getElementById('num-pessoas').value)||1;
+  const margem = parseFloat(document.getElementById('margem').value)||0;
+  const custo = costItems.reduce((s,c) => s+c.qty*c.cost, 0);
+  const result = document.getElementById('calc-result');
+  if (!costItems.length) { result.innerHTML=''; return; }
+  const preco = custo*(1+margem/100);
+  const lucro = preco-custo;
+  let html = '<div class="result-box"><div class="result-title">Resultado</div>';
+  if (tipoPreco==='pessoa') {
+    const cpp = custo/numPessoas;
+    const ppp = preco/numPessoas;
+    html += `<div class="result-row"><span>Custo total do evento</span><span>${fmt(custo)}</span></div>`;
+    html += `<div class="result-row"><span>Custo por pessoa</span><span>${fmt(cpp)}</span></div>`;
+    html += `<div class="result-row total"><span>Preço sugerido / pessoa</span><span class="green">${fmt(ppp)}</span></div>`;
+    html += `<div class="result-row"><span style="color:#888;font-size:13px">Total a cobrar (${numPessoas} pessoas)</span><span style="color:#888;font-size:13px">${fmt(preco)}</span></div>`;
+    html += `<div class="result-row"><span style="color:#888;font-size:13px">Lucro estimado</span><span class="green" style="font-size:13px">${fmt(lucro)}</span></div>`;
+  } else {
+    html += `<div class="result-row"><span>Custo total</span><span>${fmt(custo)}</span></div>`;
+    html += `<div class="result-row total"><span>Preço sugerido do kit</span><span class="green">${fmt(preco)}</span></div>`;
+    html += `<div class="result-row"><span style="color:#888;font-size:13px">Lucro estimado</span><span class="green" style="font-size:13px">${fmt(lucro)}</span></div>`;
+  }
+  html += '</div>';
+  result.innerHTML = html;
+}
+
+// ---- INIT ----
+renderEventos();
+renderChecklist();
+renderScripts();
+setTipo(tipoPreco);
+if (costItems.length) {
+  costItems.forEach(item => {
+    const container = document.getElementById('cost-items');
+    const div = document.createElement('div');
+    div.className = 'cost-item-card';
+    div.id = 'cr-'+item.id;
+    const ph = {buffet:'Ex: bolo, salgados...', transp:'Ex: combustível ida/volta', ajud:'Ex: ajudante do evento', kit:'Ex: toalha, suporte, arranjo'}[item.type]||'';
+    const label = {buffet:'Buffet', transp:'Transporte', ajud:'Ajudante', kit:'Kit/decoração'}[item.type]||item.type;
+    div.innerHTML = `
+      <div class="cost-item-top">
+        <span class="tag ${item.type}">${label}</span>
+        <button class="btn danger-sm" onclick="removeItem('${item.id}')">×</button>
+      </div>
+      <div class="field"><label>Descrição</label><input type="text" placeholder="${ph}" value="${item.nome||''}" oninput="updateItem('${item.id}','nome',this.value)"></div>
+      <div class="cost-item-row">
+        <div class="field"><label>Quantidade</label><input type="number" min="1" value="${item.qty||1}" inputmode="decimal" oninput="updateItem('${item.id}','qty',this.value)"></div>
+        <div class="field"><label>Custo unit. (R$)</label><input type="number" min="0" value="${item.cost||''}" placeholder="0" inputmode="decimal" oninput="updateItem('${item.id}','cost',this.value)"></div>
+      </div>`;
+    container.appendChild(div);
+  });
+  updateCalc();
+}
+</script>
+</body>
+</html>
